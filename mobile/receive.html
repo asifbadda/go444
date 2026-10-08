@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <!-- Bonus receiving is per-visitor: never index this page. -->
+  <meta name="robots" content="noindex,nofollow">
+  <title>Bonus · BBC99</title>
+
+  <!-- Upstream look: white top bar, blue bubble hero with avatar, name and
+       balance, then ticket cards (or the grey empty line). Items come from
+       /api/rewardsSummary.php; receiving POSTs straight to the relay. -->
+  <link rel="stylesheet" href="/m/assets/home.css?v=20261006i">
+  <link rel="stylesheet" href="/m/assets/receive.css?v=20261006b">
+  <link rel="icon" type="image/png" href="/m/assets/img/favicon.png">
+</head>
+<body class="outter-app is-guest" data-page="receive">
+  <div id="root">
+    <!-- ============ white top bar ============ -->
+    <header class="rv-topbar">
+      <button class="rv-back" type="button" id="receive-back" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <h1 class="rv-title">Bonus</h1>
+      <a class="rv-tickets" href="/m/activity" aria-label="My tickets">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2a2 2 0 0 0 0 6v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-6z"/><path d="M14 6v2M14 11v2M14 16v2" stroke-linecap="round"/></svg>
+      </a>
+    </header>
+
+    <!-- ============ blue hero ============ -->
+    <section class="rv-hero">
+      <div class="rv-hero-id">
+        <div class="rv-avatar" id="receive-avatar" aria-hidden="true">–</div>
+        <div class="rv-who">
+          <div class="rv-name" id="receive-name">—</div>
+          <div class="rv-balance"><span class="symbol">৳</span> <span id="receive-balance">0.00</span></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="receive-container">
+      <div id="receive-error" class="receive-error" hidden>
+        <p id="receive-error-text">Could not load your bonuses.</p>
+        <button type="button" id="receive-retry">Try again</button>
+      </div>
+
+      <div id="receive-loading" class="receive-loading" aria-hidden="true">
+        <div class="receive-skel"></div>
+        <div class="receive-skel"></div>
+      </div>
+
+      <div id="receive-body" hidden>
+        <div class="receive-list" id="receive-list"></div>
+        <p id="receive-empty" class="receive-empty" hidden>No promotion available yet</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="/m/assets/config.js?v=20261002g"></script>
+  <script src="/m/assets/api.js?v=20261006d"></script>
+  <script src="/m/assets/receive.js?v=20261006b"></script>
+</body>
+</html>

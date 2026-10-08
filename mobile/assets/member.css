@@ -1,0 +1,436 @@
+/* ==========================================================================
+   BBC99 member centre — upstream values, verbatim where available.
+   Card, ribbon, buttons, grid and badge rules are copied from the upstream
+   member bundle (common-center-top, cumulative-sign-in, btn-check-view,
+   member-center-wrapper); only the root font rule, the VIP pill, the avatar
+   letter, the actions row and the loading/error states are ours.
+   Upstream rem base: html{font-size:max(100vw/7.5,50px)}.
+   ========================================================================== */
+
+html {
+  font-size: max(100vw / 7.5, 50px);
+}
+
+body[data-page="member"] {
+  background: #fff;
+}
+
+body[data-page="member"] #root {
+  background: #fff;
+}
+
+/* Upstream member centre has no bottom tab bar — back goes to /m/home. */
+body[data-page="member"] #menu {
+  display: none;
+}
+
+.member-container {
+  padding: 0 0 .4rem;
+  max-width: 640px;
+  margin: 0 auto;
+  background: #fff;
+}
+
+/* ---------- dark top bar ---------- */
+.mc-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  height: 1rem;
+  padding: 0 .16rem;
+  background: #141414;
+  color: #fff;
+}
+.mc-back {
+  width: .8rem;
+  height: .8rem;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: none;
+  color: #fff;
+  cursor: pointer;
+}
+.mc-back svg { width: .44rem; height: .44rem; }
+.mc-title {
+  flex: 1;
+  margin: 0;
+  text-align: center;
+  font-size: .34rem;
+  font-weight: 700;
+}
+.mc-back-sp { width: .8rem; }
+
+/* ---------- loading + error ---------- */
+.member-loading { padding: .24rem; }
+.member-loading .member-skel {
+  border-radius: .28rem;
+  background: linear-gradient(100deg, #eef1f6 40%, #f7f9fc 50%, #eef1f6 60%);
+  background-size: 200% 100%;
+  animation: member-shimmer 1.2s linear infinite;
+  margin-bottom: .24rem;
+}
+.member-skel--card { height: 6rem; }
+.member-skel--grid { height: 4.4rem; }
+@keyframes member-shimmer {
+  to { background-position: -200% 0; }
+}
+.member-error {
+  text-align: center;
+  padding: 1rem .32rem;
+  color: #888;
+  font-size: .28rem;
+}
+.member-error button {
+  margin-top: .24rem;
+  padding: .22rem .44rem;
+  border: 0;
+  border-radius: .2rem;
+  background: #e94040;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ---------- profile card (verbatim upstream) ---------- */
+.common-center-top {
+  background-repeat: no-repeat;
+  background-size: calc(100% - .3rem) calc(100% - .3rem), auto 80%, 100% 100%;
+  background-position: 50%, bottom .1rem right .1rem;
+  min-height: 4.36rem;
+  width: 90%;
+  margin: 1.2rem auto 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: .28rem;
+  padding-top: .8rem;
+}
+.common-center-top.no-level {
+  background-image: url(/mobile/mc/border.b5fa93b3.png), url(/mobile/mc/badge.bf45a271.png), linear-gradient(90deg, #f1f9ff, #b3bcc8) !important;
+}
+.common-center-top .common-member-info {
+  display: flex;
+  align-items: center;
+  color: rgba(37, 37, 37, .6);
+  font-size: .41rem;
+  line-height: 1;
+  font-weight: 700;
+  padding: 0 .42rem;
+  white-space: normal;
+}
+.common-center-top .common-top-img {
+  height: 1.16rem;
+  width: 1.16rem;
+  min-width: 1.16rem;
+  border-radius: 50%;
+  text-align: center;
+  overflow: hidden;
+  border: .06rem solid #caa86d;
+}
+div.common-top-img {
+  display: grid;
+  place-items: center;
+  font-size: .5rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(180deg, #e94040, #b81f1f);
+}
+.common-center-top .common-member-info .user-info {
+  margin: 0 .15rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  flex: 1 1 0%;
+}
+.common-center-top .common-member-info .user-name {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-right: .2rem;
+  margin-bottom: .02rem;
+}
+.common-center-top .common-member-info .user-name .copy-account {
+  color: #000;
+  font-size: .3rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+.common-center-top .common-member-info .user-name .copy-account svg {
+  margin-left: .1rem;
+  width: .35rem;
+  height: .35rem;
+  fill: #000;
+}
+.mc-copy {
+  display: inline-grid;
+  place-items: center;
+  border: 0;
+  background: none;
+  padding: 0;
+  color: inherit;
+  cursor: pointer;
+}
+.common-center-top .common-member-info .nickname-edit {
+  flex-wrap: wrap;
+  position: relative;
+  display: flex;
+  align-items: center;
+  font-size: .24rem;
+  font-weight: 700;
+  color: rgba(37, 37, 37, .6);
+  margin-top: .13rem;
+}
+.common-center-top .common-member-info .nickname-edit .name-text {
+  display: flex;
+  max-width: 4rem;
+  word-break: break-word;
+  white-space: break-spaces;
+}
+.common-center-top .common-member-info .nickname-edit .go-to-edit {
+  margin-left: .1rem;
+  display: inline-grid;
+  place-items: center;
+}
+.common-center-top .common-member-info .nickname-edit .go-to-edit svg {
+  width: .31rem;
+  height: .31rem;
+  fill: rgba(37, 37, 37, .6);
+}
+.common-center-top .common-member-info .nickname-edit span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 2.5rem;
+  line-height: 1.2;
+}
+.common-center-top .last-login-info {
+  color: rgba(37, 37, 37, .5);
+  padding: .12rem 0 0 0;
+  font-size: .24rem;
+}
+.common-center-top .common-member-info .amount-info {
+  display: flex;
+  margin-top: .04rem;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.common-center-top .currency {
+  padding-right: .04rem;
+  font-size: 90%;
+}
+.refresh-balance {
+  width: .36rem;
+  height: .36rem;
+  border: 0;
+  background: none;
+  padding: 0;
+  color: rgba(37, 37, 37, .6);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.refresh-balance svg { width: 100%; height: 100%; }
+.refresh-balance.loading { animation: rotate-full .5s linear infinite; }
+@keyframes rotate-full {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- red Sign In ribbon (verbatim upstream) ---------- */
+.cumulative-sign-in {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: .54rem;
+  padding: 0 .75rem 0 1.4rem;
+  background-image: url(/mobile/mc/sign.4c5310da.png), linear-gradient(0deg, #bb0c0c, #ec515b);
+  background-position: .76rem, left .64rem top -1px;
+  background-size: .3rem .3rem, 100% 100%;
+  background-repeat: no-repeat;
+  color: #fff;
+  font-size: .24rem;
+  line-height: .5rem;
+}
+.cumulative-sign-in a { color: inherit; text-decoration: none; font-weight: 600; }
+.cumulative-sign-in:before {
+  content: "";
+  width: .64rem;
+  height: .51rem;
+  position: absolute;
+  left: .1rem;
+  top: 0;
+  z-index: 9;
+  background: url(/mobile/mc/top.ff5ff179.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+.cumulative-sign-in:after {
+  content: "";
+  width: .38rem;
+  height: .54rem;
+  position: absolute;
+  right: .1rem;
+  top: 0;
+  z-index: 9;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAYCAMAAAAS21dbAAAAYFBMVEUAAAD2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYePm/CpAAAAH3RSTlMA+Obth0IXDAby4MCQSDYuI9rQzHVX6LarqoBuaF9OTNUBHwAAAIJJREFUGNNdkNsSREAMRGUY1t0u607+/y+RojMmb32qkk53UBqKPoFOz8yjA4jPyRPoiK/5xR7IGoBFQFgB/OUGlQA2FbAB1EZ2OoDmK6AAiFsPJLnc8E6YR1YhPNUxtbfcCS/qg6a+5fpO1Glizds+cuZ3QeI7aF9XkMnp02ZUOPIAQKoPDTi3mn4AAAAASUVORK5CYII=) 50%;
+  background-repeat: no-repeat;
+  background-size: .18rem .28rem;
+}
+
+/* ---------- VIP pill + actions row (ours, same scale) ---------- */
+.mc-vip {
+  display: inline-flex;
+  align-items: center;
+  padding: .06rem .22rem;
+  border-radius: .2rem;
+  background: #3a3f4a;
+  color: #fff;
+  font-size: .22rem;
+  font-weight: 700;
+  margin-bottom: .06rem;
+}
+.mc-actions {
+  display: flex;
+  gap: .18rem;
+  margin-top: .25rem;
+  width: 100%;
+}
+.btn-check-view {
+  flex: 1 1 0%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: .3rem;
+  box-shadow: 0 .02rem .1rem 0 hsla(0, 0%, 42.7%, .5);
+  color: #454545;
+  padding: .1rem .15rem;
+  min-height: .6rem;
+  background: linear-gradient(0deg, hsla(0, 0%, 100%, .7), hsla(0, 0%, 100%, .3), hsla(0, 0%, 100%, 0) 67%, #fff);
+  line-height: .52rem;
+  font-size: .22rem;
+  text-align: center;
+  font-weight: 700;
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.btn-check-view:active { transform: scale(.97); }
+
+/* ---------- Member Center grid (verbatim upstream) ---------- */
+.member-center-wrapper {
+  border-radius: .3rem;
+  background: #fff;
+  box-shadow: 0 .05rem .16rem 0 rgba(0, 0, 0, .05);
+  width: calc(100% - .48rem);
+  color: #666;
+  font-size: .26rem;
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: .3rem;
+  margin: .3rem auto 0;
+}
+.member-center-wrapper .member-center-header {
+  width: 100%;
+  padding: .3rem;
+  display: flex;
+  justify-content: space-between;
+}
+.member-center-wrapper .member-center-header .info-title {
+  font-size: .3rem;
+  color: #333;
+  font-weight: 600;
+  align-self: flex-start;
+}
+.member-center-wrapper .member-center-content {
+  display: flex;
+  gap: .3rem .08rem;
+  flex-wrap: wrap;
+  width: calc(100% - .3rem);
+}
+.member-center-wrapper .list-item {
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: calc(25% - 0.08rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .18rem;
+  text-align: center;
+  word-break: break-word;
+  color: inherit;
+  text-decoration: none;
+  background: none;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+.member-center-wrapper .list-item svg {
+  width: .58rem;
+  height: .58rem;
+  fill: currentColor;
+}
+.member-center-wrapper .list-item .item-icon {
+  position: relative;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at 50% 35%, #fdf6e3, #f7e8c8);
+  color: #c9982f;
+  box-shadow: inset 0 0 0 1px #f0dfb8;
+}
+.member-center-wrapper .list-item .item-icon .unread-count {
+  top: -.16rem;
+  right: -.28rem;
+}
+.member-center-wrapper .unread-count {
+  border-radius: .15rem .15rem .15rem 0;
+  background: linear-gradient(228deg, #f05e57 2.97%, #e03a32 97.03%);
+  min-width: .28rem;
+  width: fit-content;
+  height: .28rem;
+  line-height: .28rem;
+  font-size: .22rem;
+  font-weight: 400;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: -1px;
+  top: -1px;
+  padding: 0 .05rem;
+}
+.list-item--btn { width: 100%; }
+
+/* ---------- toast (ours; home.css owns it on the home page) ---------- */
+.toast-wrap {
+  position: fixed;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+  align-items: center;
+}
+.toast {
+  background: rgba(0, 0, 0, .75);
+  color: #fff;
+  font-size: .26rem;
+  padding: .18rem .35rem;
+  border-radius: .3rem;
+  white-space: nowrap;
+}

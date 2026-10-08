@@ -1900,7 +1900,6 @@ function admin_games_vendor_list(): array
         ]);
         $raw = curl_exec($ch);
         $code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
         if ($raw !== false && $code >= 200 && $code < 400) {
             $j = json_decode((string) $raw, true);
             $lanes = $j['data']['lanes'] ?? ($j['value']['data']['lanes'] ?? []);

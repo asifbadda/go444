@@ -706,7 +706,6 @@ function brand_asset_save_url(string $url, string $type): string|false
         ]);
         $bytes = curl_exec($ch);
         $code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
         if ($bytes === false || $code < 200 || $code >= 400) {
             return false;
         }

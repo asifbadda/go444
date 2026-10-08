@@ -1,0 +1,272 @@
+/* ==========================================================================
+   BBC99 bonus receiving — upstream look.
+   White top bar, blue bubble hero, ticket cards or the grey empty line.
+   Upstream rem base: html{font-size:max(100vw/7.5,50px)}.
+   ========================================================================== */
+
+html {
+  font-size: max(100vw / 7.5, 50px);
+}
+
+body[data-page="receive"] {
+  background: #fff;
+  min-height: 100vh;
+}
+
+body[data-page="receive"] #root {
+  min-height: 100vh;
+  background: #fff;
+}
+
+/* ---------- white top bar ---------- */
+.rv-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  height: 1rem;
+  padding: 0 .2rem;
+  background: #fff;
+  color: #1a1a1a;
+  border-bottom: 1px solid #f0f0f0;
+}
+.rv-back {
+  width: .8rem;
+  height: .8rem;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: none;
+  color: #1a1a1a;
+  cursor: pointer;
+}
+.rv-back svg { width: .44rem; height: .44rem; }
+.rv-title {
+  flex: 1;
+  margin: 0;
+  text-align: center;
+  font-size: .34rem;
+  font-weight: 600;
+}
+.rv-tickets {
+  width: .8rem;
+  height: .8rem;
+  display: grid;
+  place-items: center;
+  color: #1a345e;
+}
+.rv-tickets svg { width: .5rem; height: .5rem; }
+
+/* ---------- blue bubble hero ---------- */
+.rv-hero {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #37b6f6 0%, #1e86ef 60%, #1a76ec 100%);
+  padding: .55rem .5rem .9rem;
+}
+/* translucent bubbles, like the upstream artwork */
+.rv-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 12% 30%, rgba(255, 255, 255, .28) 0 .55rem, transparent .6rem),
+    radial-gradient(circle at 68% 12%, rgba(255, 255, 255, .30) 0 .4rem, transparent .45rem),
+    radial-gradient(circle at 88% 42%, rgba(255, 255, 255, .25) 0 .7rem, transparent .75rem),
+    radial-gradient(circle at 30% 85%, rgba(255, 255, 255, .18) 0 1rem, transparent 1.05rem),
+    radial-gradient(ellipse at 75% 100%, rgba(255, 255, 255, .15) 0 2rem, transparent 2.05rem);
+  pointer-events: none;
+}
+.rv-hero::after {
+  /* soft wave along the bottom edge */
+  content: "";
+  position: absolute;
+  left: -20%;
+  right: -20%;
+  bottom: -.9rem;
+  height: 1.6rem;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, .22), transparent 65%);
+  pointer-events: none;
+}
+.rv-hero-id {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+}
+.rv-avatar {
+  flex: 0 0 1.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: .6rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(180deg, #e94040, #b81f1f);
+  border: .06rem solid rgba(255, 255, 255, .75);
+  overflow: hidden;
+}
+.rv-name {
+  font-size: .34rem;
+  font-weight: 700;
+  color: #fff;
+}
+.rv-balance {
+  margin-top: .08rem;
+  font-size: .5rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.receive-container {
+  padding: .4rem .3rem 1rem;
+  max-width: 640px;
+  margin: 0 auto;
+  background: #fff;
+}
+
+/* ---------- loading + error ---------- */
+.receive-loading .receive-skel {
+  border-radius: .24rem;
+  background: linear-gradient(100deg, #eef1f6 40%, #f7f9fc 50%, #eef1f6 60%);
+  background-size: 200% 100%;
+  animation: receive-shimmer 1.2s linear infinite;
+  margin-bottom: .24rem;
+  height: 2.4rem;
+}
+@keyframes receive-shimmer {
+  to { background-position: -200% 0; }
+}
+.receive-error {
+  text-align: center;
+  padding: 1rem .32rem;
+  color: #888;
+  font-size: .28rem;
+}
+.receive-error button {
+  margin-top: .24rem;
+  padding: .22rem .44rem;
+  border: 0;
+  border-radius: .2rem;
+  background: #1e86ef;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.receive-empty {
+  text-align: center;
+  padding: 1.6rem .5rem;
+  color: #b5b5b5;
+  font-size: .34rem;
+  margin: 0;
+}
+
+/* ---------- ticket cards ---------- */
+.receive-list {
+  display: flex;
+  flex-direction: column;
+  gap: .24rem;
+}
+.ticket {
+  position: relative;
+  border-radius: .24rem;
+  background: #fff;
+  border: 1px solid #dceaff;
+  box-shadow: 0 .04rem .16rem rgba(30, 134, 239, .08);
+  padding: .28rem;
+  color: #333;
+  overflow: hidden;
+}
+.ticket-top {
+  display: flex;
+  align-items: center;
+  gap: .2rem;
+}
+.ticket-ico {
+  flex: 0 0 .9rem;
+  width: .9rem;
+  height: .9rem;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #37b6f6, #1e86ef);
+  display: grid;
+  place-items: center;
+  color: #fff;
+}
+.ticket-ico svg { width: .5rem; height: .5rem; }
+.ticket-name {
+  font-size: .3rem;
+  font-weight: 700;
+  flex: 1 1 0%;
+  min-width: 0;
+}
+.ticket-amount {
+  font-size: .38rem;
+  font-weight: 800;
+  color: #1e86ef;
+  white-space: nowrap;
+}
+.ticket-desc {
+  margin: .14rem 0 0;
+  font-size: .24rem;
+  line-height: 1.5;
+  color: #888;
+}
+.ticket-foot {
+  display: flex;
+  align-items: center;
+  gap: .2rem;
+  margin-top: .2rem;
+}
+.ticket-countdown {
+  font-size: .24rem;
+  font-weight: 600;
+  color: #888;
+  font-variant-numeric: tabular-nums;
+}
+.ticket-countdown.is-expired { color: #e94040; }
+.ticket-receive {
+  margin-left: auto;
+  padding: .14rem .55rem;
+  border: 0;
+  border-radius: .3rem;
+  background: linear-gradient(180deg, #37b6f6, #1e86ef);
+  color: #fff;
+  font: inherit;
+  font-size: .26rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.ticket-receive:disabled { opacity: .45; }
+.ticket-state {
+  margin-left: auto;
+  font-size: .24rem;
+  font-weight: 700;
+  color: #999;
+}
+
+/* ---------- toast ---------- */
+.toast-wrap {
+  position: fixed;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+  align-items: center;
+}
+.toast {
+  background: rgba(0, 0, 0, .75);
+  color: #fff;
+  font-size: .26rem;
+  padding: .18rem .35rem;
+  border-radius: .3rem;
+  white-space: nowrap;
+}

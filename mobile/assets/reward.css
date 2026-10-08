@@ -1,0 +1,415 @@
+/* ==========================================================================
+   BBC99 rewards — upstream look.
+   Warm full-bleed gradient, light profile card with red Sign In ribbon,
+   2-column promo tiles. Upstream rem base: html{font-size:max(100vw/7.5,50px)}.
+   ========================================================================== */
+
+html {
+  font-size: max(100vw / 7.5, 50px);
+}
+
+body[data-page="reward"] {
+  background: #fff;
+  min-height: 100vh;
+}
+
+body[data-page="reward"] #root {
+  position: relative;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #ff8a4c 0%, #ff9d5c 22%, #ffd9b8 46%, #fff 72%);
+}
+
+/* Upstream rewards page has no bottom tab bar. */
+body[data-page="reward"] #menu {
+  display: none;
+}
+
+/* soft decorative blobs, like the upstream backdrop */
+.reward-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.reward-bg::before {
+  content: "";
+  position: absolute;
+  top: -.9rem;
+  left: -.7rem;
+  width: 3.4rem;
+  height: 3.4rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, .35), transparent 70%);
+}
+.reward-bg::after {
+  content: "";
+  position: absolute;
+  top: .4rem;
+  right: -.9rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 220, 120, .55), transparent 70%);
+}
+
+.reward-back {
+  display: none;
+}
+
+.reward-container {
+  position: relative;
+  z-index: 1;
+  padding: 1.1rem .3rem 1rem;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* ---------- loading + error ---------- */
+.reward-loading .reward-skel {
+  border-radius: .28rem;
+  background: linear-gradient(100deg, rgba(255,255,255,.55) 40%, rgba(255,255,255,.85) 50%, rgba(255,255,255,.55) 60%);
+  background-size: 200% 100%;
+  animation: reward-shimmer 1.2s linear infinite;
+  margin-bottom: .24rem;
+}
+.reward-skel--card { height: 5.4rem; }
+.reward-skel--tiles { height: 6rem; }
+@keyframes reward-shimmer {
+  to { background-position: -200% 0; }
+}
+.reward-error {
+  text-align: center;
+  padding: 1rem .32rem;
+  color: #fff;
+  font-size: .28rem;
+}
+.reward-error button {
+  margin-top: .24rem;
+  padding: .22rem .44rem;
+  border: 0;
+  border-radius: .2rem;
+  background: #e94040;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.reward-empty {
+  text-align: center;
+  padding: 1rem .5rem;
+  color: #888;
+  font-size: .28rem;
+}
+.reward-empty a {
+  display: inline-block;
+  margin-top: .3rem;
+  padding: .22rem .5rem;
+  border-radius: .3rem;
+  background: linear-gradient(180deg, #fff60a, #ff6200);
+  color: #231a00;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* ---------- profile card ---------- */
+.rw-card {
+  position: relative;
+  border-radius: .28rem;
+  background: linear-gradient(180deg, #f4f7fc, #e3e9f4);
+  box-shadow: 0 .05rem .2rem rgba(120, 60, 0, .12);
+  padding: .7rem .36rem .36rem;
+  overflow: hidden;
+}
+.rw-card::after {
+  /* faint crown watermark, like the upstream badge layer */
+  content: "";
+  position: absolute;
+  right: -.5rem;
+  top: .5rem;
+  width: 3.4rem;
+  height: 3.4rem;
+  background: url(/mobile/mc/badge.bf45a271.png) no-repeat;
+  background-size: contain;
+  opacity: .35;
+  pointer-events: none;
+}
+
+/* red Sign In ribbon (same as member centre) */
+.cumulative-sign-in {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: .54rem;
+  padding: 0 .75rem 0 1.4rem;
+  background-image: url(/mobile/mc/sign.4c5310da.png), linear-gradient(0deg, #bb0c0c, #ec515b);
+  background-position: .76rem, left .64rem top -1px;
+  background-size: .3rem .3rem, 100% 100%;
+  background-repeat: no-repeat;
+  color: #fff;
+  font-size: .24rem;
+  line-height: .5rem;
+}
+.cumulative-sign-in a { color: inherit; text-decoration: none; font-weight: 600; }
+.cumulative-sign-in:before {
+  content: "";
+  width: .64rem;
+  height: .51rem;
+  position: absolute;
+  left: .1rem;
+  top: 0;
+  z-index: 9;
+  background: url(/mobile/mc/top.ff5ff179.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+.cumulative-sign-in:after {
+  content: "";
+  width: .38rem;
+  height: .54rem;
+  position: absolute;
+  right: .1rem;
+  top: 0;
+  z-index: 9;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAYCAMAAAAS21dbAAAAYFBMVEUAAAD2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYf2hYePm/CpAAAAH3RSTlMA+Obth0IXDAby4MCQSDYuI9rQzHVX6LarqoBuaF9OTNUBHwAAAIJJREFUGNNdkNsSREAMRGUY1t0u607+/y+RojMmb32qkk53UBqKPoFOz8yjA4jPyRPoiK/5xR7IGoBFQFgB/OUGlQA2FbAB1EZ2OoDmK6AAiFsPJLnc8E6YR1YhPNUxtbfcCS/qg6a+5fpO1Glizds+cuZ3QeI7aF9XkMnp02ZUOPIAQKoPDTi3mn4AAAAASUVORK5CYII=) 50%;
+  background-repeat: no-repeat;
+  background-size: .18rem .28rem;
+}
+
+.rw-id {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: .28rem;
+  align-items: flex-start;
+}
+.rw-avatar {
+  flex: 0 0 1.75rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: .6rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(180deg, #e94040, #b81f1f);
+  border: .06rem solid #caa86d;
+  overflow: hidden;
+}
+.rw-who { min-width: 0; flex: 1 1 0%; }
+.rw-account-row {
+  display: flex;
+  align-items: center;
+  gap: .12rem;
+}
+.rw-account {
+  font-size: .38rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  letter-spacing: .01rem;
+}
+.rw-copy {
+  display: grid;
+  place-items: center;
+  width: .5rem;
+  height: .5rem;
+  border: 0;
+  background: none;
+  color: #1a1a1a;
+  cursor: pointer;
+  padding: 0;
+}
+.rw-copy svg { width: .34rem; height: .34rem; }
+.rw-nick-label {
+  margin-top: .12rem;
+  font-size: .28rem;
+  font-weight: 700;
+  color: rgba(37, 37, 37, .6);
+}
+.rw-nick-row {
+  display: flex;
+  align-items: center;
+  gap: .1rem;
+  font-size: .28rem;
+  font-weight: 700;
+  color: #555;
+}
+.rw-edit { display: inline-grid; place-items: center; color: #555; }
+.rw-edit svg { width: .3rem; height: .3rem; }
+.rw-balance-row {
+  display: flex;
+  align-items: center;
+  gap: .12rem;
+  margin-top: .1rem;
+}
+.rw-balance {
+  font-size: .5rem;
+  font-weight: 800;
+  color: #1a1a1a;
+}
+.rw-refresh {
+  display: grid;
+  place-items: center;
+  width: .44rem;
+  height: .44rem;
+  border: 0;
+  background: none;
+  color: #555;
+  cursor: pointer;
+  padding: 0;
+}
+.rw-refresh svg { width: 100%; height: 100%; }
+.rw-refresh.loading { animation: rotate-full .5s linear infinite; }
+@keyframes rotate-full {
+  to { transform: rotate(360deg); }
+}
+
+.rw-vip-row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: .3rem;
+}
+.rw-vip {
+  display: inline-flex;
+  align-items: center;
+  gap: .1rem;
+  font-size: .3rem;
+  font-weight: 700;
+  color: #777;
+}
+.rw-crown { display: inline-grid; place-items: center; color: #9aa3b2; }
+.rw-crown svg { width: .4rem; height: .4rem; }
+.rw-benefits {
+  font-size: .28rem;
+  font-weight: 600;
+  color: #333;
+  text-decoration: none;
+}
+.rw-progress-row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: .15rem;
+  margin-top: .12rem;
+}
+.rw-progress-track {
+  flex: 1 1 0%;
+  height: .1rem;
+  border-radius: .05rem;
+  background: rgba(0, 0, 0, .15);
+  overflow: hidden;
+}
+.rw-progress-fill {
+  height: 100%;
+  width: 0;
+  border-radius: .05rem;
+  background: linear-gradient(90deg, #ff9d5c, #f05353);
+  transition: width .6s ease;
+}
+.rw-progress-num {
+  font-size: .24rem;
+  color: #777;
+  white-space: nowrap;
+}
+
+/* ---------- promo tiles ---------- */
+.rw-tiles {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .24rem;
+  margin-top: .3rem;
+}
+.rw-tile {
+  position: relative;
+  border: 0;
+  border-radius: .28rem;
+  padding: .5rem .2rem .4rem;
+  min-height: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .25rem;
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+  overflow: hidden;
+  text-align: center;
+}
+.rw-tile--bonus { background: linear-gradient(160deg, #2fd48a, #0ea968); }
+.rw-tile--signin { background: linear-gradient(160deg, #3aa0ff, #2b5cf5); }
+.rw-tile--rescue { background: linear-gradient(160deg, #ffb03a, #ff8a1e); }
+.rw-tile--invite { background: linear-gradient(160deg, #ff7d9c, #f23d5e); }
+.rw-tile--coupon { background: linear-gradient(160deg, #ff6a3d, #f0352c); }
+.rw-tile--other { background: linear-gradient(160deg, #b678f0, #7f4fe0); }
+.rw-tile-ico {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .95);
+  display: grid;
+  place-items: center;
+}
+.rw-tile-ico svg { width: .55rem; height: .55rem; }
+.rw-tile::before {
+  /* faint dotted motif, like the upstream tile artwork */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, .35) .035rem, transparent .045rem);
+  background-size: .32rem .32rem;
+  background-position: 0 0;
+  opacity: .5;
+  pointer-events: none;
+}
+.rw-tile--bonus .rw-tile-ico { color: #0ea968; }
+.rw-tile--signin .rw-tile-ico { color: #2b5cf5; }
+.rw-tile--rescue .rw-tile-ico { color: #ff8a1e; }
+.rw-tile--invite .rw-tile-ico { color: #f23d5e; }
+.rw-tile--coupon .rw-tile-ico { color: #f0352c; }
+.rw-tile--other .rw-tile-ico { color: #7f4fe0; }
+.rw-tile-label {
+  font-size: .32rem;
+  font-weight: 600;
+}
+.rw-tile-badge {
+  position: absolute;
+  top: .55rem;
+  left: calc(50% + .1rem);
+  min-width: .4rem;
+  height: .4rem;
+  padding: 0 .1rem;
+  border-radius: .2rem;
+  background: #f02323;
+  color: #fff;
+  font-size: .24rem;
+  font-weight: 700;
+  line-height: .4rem;
+}
+.rw-tile:active { transform: scale(.97); }
+
+/* ---------- toast ---------- */
+.toast-wrap {
+  position: fixed;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+  align-items: center;
+}
+.toast {
+  background: rgba(0, 0, 0, .75);
+  color: #fff;
+  font-size: .26rem;
+  padding: .18rem .35rem;
+  border-radius: .3rem;
+  white-space: nowrap;
+}

@@ -112,11 +112,11 @@ $fullPath = $path . ($query ? '?' . $query : '');
 // ---------------------------------------------------------------------------
 // Custom frontend (our own HTML)
 //
-// The home page and the two auth pages are our files under <project>/mobile/,
-// streamed back exactly as authored - no brand rewriting, no injected shims, no
-// splash. EVERY other page (member centre, deposit, withdraw, records, ...) is
-// the upstream's own page, proxied further below with the normal pipeline, so
-// it keeps the same HTML and the same backend everywhere else.
+// The home page, the two auth pages and the member dashboard are our files
+// under <project>/mobile/, streamed back exactly as authored - no brand
+// rewriting, no injected shims, no splash. EVERY other page (deposit,
+// withdraw, records, ...) is proxied further below with the normal pipeline,
+// so it keeps the same HTML and the same backend everywhere else.
 //
 // Point any route at any file here to take it over from the upstream; a route
 // with no entry here simply proxies.
@@ -135,6 +135,18 @@ $localPages = [
     '/m/home'       => 'index.html',
     '/m/login'      => 'login.html',
     '/m/register'   => 'register.html',
+    // Custom member dashboard (mobile/member.html + member.js, data from
+    // /api/memberSummary.php). Money-movement and record pages stay proxied.
+    '/m/member/home' => 'member.html',
+    // Custom rewards page (mobile/reward.html + reward.js, data from
+    // /api/rewardsSummary.php, claims POST straight to the relay).
+    '/m/rewardCenter' => 'reward.html',
+    // Bonus receiving list (mobile/receive.html + receive.js, extra +
+    // claimable legs of /api/rewardsSummary.php).
+    '/m/receivingCenter' => 'receive.html',
+    // Daily sign-in (mobile/signin.html + signin.js, data from
+    // /api/signinSummary.php, check-ins POST MCSFE_claimLoginPromotion).
+    '/m/activity/signIn' => 'signin.html',
     // In-app game window: frames the launched game and owns the Back button.
     '/m/game'       => 'game.html',
 ];
@@ -988,7 +1000,6 @@ function fetchFromUpstream(string $base, string $path, int $maxAttempts = 2, int
         $err    = curl_error($ch);
         $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $ct     = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-        curl_close($ch);
         $lastBody = $body;
         $lastErr = $err;
         $lastStatus = $status;
@@ -2489,7 +2500,8 @@ CSS;
     // and a later refresh swaps the page under them. Turn those transitions into
     // a real document load instead.
     $ours = ['/', '/index', '/index.html', '/home', '/m', '/m/index', '/m/index.html',
-        '/m/home', '/m/login', '/m/register', '/m/account'];
+        '/m/home', '/m/login', '/m/register', '/m/account', '/m/member/home', '/m/rewardCenter',
+        '/m/receivingCenter', '/m/activity/signIn'];
     $oursJson = json_encode($ours, JSON_UNESCAPED_SLASHES);
     $out .= '<script>(function(){var OURS=' . $oursJson . ';'
         . 'function norm(p){if(p==="/"||p==="/index"||p==="/index.html"||p==="/home"||p==="/m"||p==="/m/index"||p==="/m/index.html"||p==="/m/home")return "/m/index.html";return null;}'
@@ -2765,7 +2777,6 @@ function cacheResource(string $relPath): void
     curl_setopt_array($ch, $opts);
     $data = curl_exec($ch);
     $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
 
     if ($data !== false && $code >= 200 && $code < 400) {
         writeCacheFile($local, $data);

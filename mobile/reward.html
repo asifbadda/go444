@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <meta name="theme-color" content="#ff7a45">
+  <!-- Rewards are per-visitor: never index this page. -->
+  <meta name="robots" content="noindex,nofollow">
+  <title>My Rewards · BBC99</title>
+
+  <!-- Upstream look: full-bleed warm gradient, light profile card, 2-column
+       promo tiles. Data from /api/rewardsSummary.php (tiles + claims) and
+       /api/memberSummary.php (profile card). -->
+  <link rel="stylesheet" href="/m/assets/home.css?v=20261006i">
+  <link rel="stylesheet" href="/m/assets/reward.css?v=20261006b">
+  <link rel="icon" type="image/png" href="/m/assets/img/favicon.png">
+</head>
+<body class="outter-app is-guest" data-page="reward">
+  <div id="root">
+    <div class="reward-bg" aria-hidden="true"></div>
+
+    <div class="reward-container">
+      <div id="reward-error" class="reward-error" hidden>
+        <p id="reward-error-text">Could not load your rewards.</p>
+        <button type="button" id="reward-retry">Try again</button>
+      </div>
+
+      <div id="reward-loading" class="reward-loading" aria-hidden="true">
+        <div class="reward-skel reward-skel--card"></div>
+        <div class="reward-skel reward-skel--tiles"></div>
+      </div>
+
+      <div id="reward-body" hidden>
+        <!-- ============ profile card ============ -->
+        <section class="rw-card">
+          <div class="cumulative-sign-in"><a href="/m/activity/signIn">Sign In</a></div>
+          <div class="rw-id">
+            <div class="rw-avatar" id="reward-avatar" aria-hidden="true">–</div>
+            <div class="rw-who">
+              <div class="rw-account-row">
+                <span class="rw-account" id="reward-account">—</span>
+                <button class="rw-copy" type="button" id="reward-copy" aria-label="Copy account number">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 9h11v11H9zM5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                </button>
+              </div>
+              <div class="rw-nick-label">Nickname:</div>
+              <div class="rw-nick-row">
+                <span class="rw-nick" id="reward-name">—</span>
+                <a class="rw-edit" href="/m/myAccount/nickName" aria-label="Edit nickname">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1-4L16.5 4.5a2.1 2.1 0 0 1 3 3L8 19zM14.5 6.5l3 3" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                </a>
+              </div>
+              <div class="rw-balance-row">
+                <span class="rw-balance"><span class="symbol">৳</span> <span id="reward-balance">0.00</span></span>
+                <button class="rw-refresh" type="button" id="reward-refresh" aria-label="Refresh balance">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 5v6h-6"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="rw-vip-row">
+            <span class="rw-vip"><span class="rw-crown" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 7l4 3.5L12 5l5 5.5L21 7l-1.6 10H4.6zM4 20h16v1.5H4z"/></svg></span><span id="reward-vip">—</span></span>
+            <a class="rw-benefits" href="/m/activity">Benefits <span aria-hidden="true">›</span></a>
+          </div>
+          <div class="rw-progress-row">
+            <div class="rw-progress-track"><div class="rw-progress-fill" id="reward-progress-fill"></div></div>
+            <span class="rw-progress-num" id="reward-progress-num"></span>
+          </div>
+        </section>
+
+        <!-- ============ promo tiles ============ -->
+        <section class="rw-tiles" id="reward-tiles"></section>
+
+        <div id="reward-empty" class="reward-empty" hidden>
+          <p>No rewards right now — check back after you play.</p>
+          <a href="/m/activity">View promotions</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/m/assets/config.js?v=20261002g"></script>
+  <script src="/m/assets/api.js?v=20261006d"></script>
+  <script src="/m/assets/reward.js?v=20261006b"></script>
+</body>
+</html>

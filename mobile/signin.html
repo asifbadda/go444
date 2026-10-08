@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <meta name="theme-color" content="#ff9d3c">
+  <!-- Sign-in progress is per-visitor: never index this page. -->
+  <meta name="robots" content="noindex,nofollow">
+  <title>Sign In · BBC99</title>
+
+  <!-- Upstream look: white top bar, orange hero with avatar, white stat card,
+       blue marquee, red promo headline, conditions box, day cards. Data from
+       /api/signinSummary.php (state) + /api/memberSummary.php (hero);
+       check-ins POST MCSFE_claimLoginPromotion through PXAPI. -->
+  <link rel="stylesheet" href="/m/assets/home.css?v=20261006i">
+  <link rel="stylesheet" href="/m/assets/signin.css?v=20261006a">
+  <link rel="icon" type="image/png" href="/m/assets/img/favicon.png">
+</head>
+<body class="outter-app is-guest" data-page="signin">
+  <div id="root">
+    <!-- ============ white top bar ============ -->
+    <header class="si-topbar">
+      <button class="si-back" type="button" id="signin-back" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <h1 class="si-title">Sign In</h1>
+      <span class="si-back-sp"></span>
+    </header>
+
+    <!-- ============ orange hero ============ -->
+    <section class="si-hero">
+      <div class="si-hero-id">
+        <div class="si-avatar" id="signin-avatar" aria-hidden="true">–</div>
+        <div class="si-who">
+          <div class="si-name" id="signin-name">—</div>
+          <div class="si-balance"><span class="symbol">৳</span> <span id="signin-balance">0.00</span></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="signin-container">
+      <div id="signin-error" class="signin-error" hidden>
+        <p id="signin-error-text">Could not load the check-in.</p>
+        <button type="button" id="signin-retry">Try again</button>
+      </div>
+
+      <div id="signin-loading" class="signin-loading" aria-hidden="true">
+        <div class="signin-skel"></div>
+        <div class="signin-skel"></div>
+      </div>
+
+      <div id="signin-body" hidden>
+        <!-- ============ stat card ============ -->
+        <section class="si-stats">
+          <div class="si-stat">
+            <span class="si-stat-num si-stat-num--blue" id="signin-last">—</span>
+            <span class="si-stat-label">Last sign in</span>
+          </div>
+          <div class="si-stat">
+            <span class="si-stat-num si-stat-num--red" id="signin-total">—</span>
+            <span class="si-stat-label">Sign in total bonus</span>
+          </div>
+        </section>
+
+        <!-- ============ marquee ============ -->
+        <div class="si-marquee" id="signin-marquee" hidden>
+          <div class="si-marquee-content" id="signin-marquee-content"></div>
+        </div>
+
+        <!-- ============ promo headline ============ -->
+        <section class="si-promo" id="signin-promo" hidden>
+          <span class="si-promo-gift" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="16" height="11" rx="1.5"/><path d="M4 6.5h16V9H4zM12 6.5V20M12 6.5S8 6.5 6.5 5A1.6 1.6 0 0 1 8 2.5c1.5 0 3 2.4 4 4zm0 0s4 0 5.5-1.5A1.6 1.6 0 0 0 16 2.5c-1.5 0-3 2.4-4 4z"/><circle cx="7.5" cy="14.5" r="1.6"/><circle cx="16.5" cy="14.5" r="1.6"/></svg></span>
+          <div class="si-promo-text">
+            <h2 id="signin-headline">—</h2>
+            <p class="si-check-state" id="signin-checkstate"></p>
+          </div>
+        </section>
+
+        <!-- ============ conditions ============ -->
+        <section class="si-conditions" id="signin-conditions" hidden>
+          <div class="si-cond"><span class="si-cond-label">Minimum deposit amount:</span><span class="si-cond-value">৳ <span id="signin-mindep">—</span></span></div>
+          <div class="si-cond"><span class="si-cond-label">Betting conditions:</span><span class="si-cond-value">৳ <span id="signin-betcond">—</span></span></div>
+        </section>
+
+        <!-- ============ day cards ============ -->
+        <section class="si-days" id="signin-days"></section>
+      </div>
+    </div>
+  </div>
+
+  <script src="/m/assets/config.js?v=20261002g"></script>
+  <script src="/m/assets/api.js?v=20261006d"></script>
+  <script src="/m/assets/signin.js?v=20261006a"></script>
+</body>
+</html>

@@ -65,7 +65,13 @@
     // calls getRankList with { gameCategory, language, limitNum }.
     winnerBoard:     { link: '/wps/relay/GCSGAME_getRankList',       method: 'GET'  },
     launchGame:      { link: '/wps/game/launchGame',                 method: 'GET'  },
-    announcements:   { link: '/wps/relay/CCSFE_getListAnnouncements', method: 'GET' }
+    announcements:   { link: '/wps/relay/CCSFE_getListAnnouncements', method: 'GET' },
+    // Rewards: lists are read through the local aggregator; claims are
+    // mutations and go straight to the relay (POST, like upstream).
+    claimTicket:     { link: '/wps/relay/PROMOFE_claimTicket',         method: 'POST' },
+    claimIssued:     { link: '/wps/relay/MCSFE_claimIssuedPromotion',  method: 'POST' },
+    claimLogin:      { link: '/wps/relay/MCSFE_claimLoginPromotion',   method: 'POST' },
+    cancelTicket:    { link: '/wps/relay/MCSFE_cancelTicket',          method: 'POST' }
   };
 
   // The upstream backend expects a "Merchant" context header on most calls.
@@ -455,6 +461,39 @@
     captchaGeetest:  function ()  { return request('captchaGeetest'); },
     memberInfo:      function ()  { return request('memberInfo'); },
     balance:         function ()  { return request('balance'); },
+    /* Member dashboard aggregator (local, same-origin): one call fans out
+       server-side to the upstream calls the member page needs. Sends the
+       session (Authorization + cookies) like every other PXAPI call; a 401
+       means guest or dead session. A stored token the aggregator rejects
+       is dropped and retried once as guest, mirroring request(). */
+    memberSummary:   function ()  {
+      function call(withAuth) {
+        var h = headers();
+        if (!withAuth) { delete h['Authorization']; }
+        return fetch(BASE + '/api/memberSummary.php', {
+          headers: h,
+          credentials: 'include'
+        }).then(function (res) {
+          return res.text().then(function (text) {
+            var data;
+            try { data = text ? JSON.parse(text) : {}; }
+            catch (e) { data = {}; }
+            if (res.status === 401 && withAuth && h['Authorization']) {
+              try { setToken(''); } catch (e) {}
+              return call(false);
+            }
+            if (!res.ok) {
+              var err = new Error((data && (data.error || data.message)) || ('HTTP ' + res.status));
+              err.status = res.status;
+              err.data = data;
+              throw err;
+            }
+            return data;
+          });
+        });
+      }
+      return call(true);
+    },
     gameList:        function (p) { return request('gameList', p); },
     hotGames:        function (p) { return request('hotGames', p); },
     gameVendors:     function (p) { return request('gameVendors', p); },
@@ -480,6 +519,70 @@
     loadSettings:    loadSettings,
     settingsAllowed: allowed,
     gameSettings:    gameSettings,
-    announcements:   function (p) { return request('announcements', p); }
+    announcements:   function (p) { return request('announcements', p); },
+    /* Rewards dashboard aggregator (local, same-origin). Same session +
+       stale-token handling as memberSummary. */
+    rewardsSummary:  function ()  {
+      function call(withAuth) {
+        var h = headers();
+        if (!withAuth) { delete h['Authorization']; }
+        return fetch(BASE + '/api/rewardsSummary.php', {
+          headers: h,
+          credentials: 'include'
+        }).then(function (res) {
+          return res.text().then(function (text) {
+            var data;
+            try { data = text ? JSON.parse(text) : {}; }
+            catch (e) { data = {}; }
+            if (res.status === 401 && withAuth && h['Authorization']) {
+              try { setToken(''); } catch (e) {}
+              return call(false);
+            }
+            if (!res.ok) {
+              var err = new Error((data && (data.error || data.message)) || ('HTTP ' + res.status));
+              err.status = res.status;
+              err.data = data;
+              throw err;
+            }
+            return data;
+          });
+        });
+      }
+      return call(true);
+    },
+    claimTicket:     function (p) { return request('claimTicket', p); },
+    claimIssued:     function (p) { return request('claimIssued', p); },
+    claimLogin:      function (p) { return request('claimLogin', p); },
+    cancelTicket:    function (p) { return request('cancelTicket', p); },
+    /* Daily sign-in aggregator (local, same-origin). Same session +
+       stale-token handling as memberSummary. */
+    signinSummary:   function ()  {
+      function call(withAuth) {
+        var h = headers();
+        if (!withAuth) { delete h['Authorization']; }
+        return fetch(BASE + '/api/signinSummary.php', {
+          headers: h,
+          credentials: 'include'
+        }).then(function (res) {
+          return res.text().then(function (text) {
+            var data;
+            try { data = text ? JSON.parse(text) : {}; }
+            catch (e) { data = {}; }
+            if (res.status === 401 && withAuth && h['Authorization']) {
+              try { setToken(''); } catch (e) {}
+              return call(false);
+            }
+            if (!res.ok) {
+              var err = new Error((data && (data.error || data.message)) || ('HTTP ' + res.status));
+              err.status = res.status;
+              err.data = data;
+              throw err;
+            }
+            return data;
+          });
+        });
+      }
+      return call(true);
+    }
   };
 })(window);

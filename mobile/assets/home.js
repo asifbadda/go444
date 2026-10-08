@@ -529,12 +529,87 @@
       var d = (res && res.value) || res || {};
       if (!hasIdentity(d)) { setGuest(); return; }
       setAuth();
-      var amount = d.balance != null ? d.balance
-                 : (d.availableBalance != null ? d.availableBalance : d.walletBalance);
-      var bEl = $('#hdr-balance'); if (bEl && amount != null) bEl.textContent = Number(amount).toLocaleString('en-US', { maximumFractionDigits: 2 });
       var nEl = $('#hdr-name'); var nm = d.nickname || d.username || d.mobile || '';
       if (nEl && nm) nEl.textContent = nm;
+      refreshBalance();
     }).catch(setGuest);
+  }
+
+  /* ---------- live balance ----------
+     member/info carries identity, not money — the amount lives on the funds
+     endpoints. hydrateSession() runs once per load, so without this the
+     header froze at whatever it first painted (or 0.00) until a reload.
+     Poll the dedicated balance endpoint while signed in: on an interval,
+     and immediately when the page becomes visible again (back from a game,
+     vendor tab, or bfcache restore — exactly when the balance moved). */
+  var BALANCE_EVERY_MS = 30000;
+  var balanceTimer = null;
+  var balanceBusy = false;
+
+  // Both shapes the backend uses: wallets/balance
+  // (value.sumBalance + balance[accountTypeId=2].availBalance) and
+  // funds/consolidated fallbacks — first numeric hit wins.
+  function extractBalance(res) {
+    var v = (res && res.value) || res || {};
+    function num(x) { return (typeof x === 'number' && isFinite(x)) ? x : null; }
+    var direct = num(v.availBalance) != null ? num(v.availBalance)
+      : num(v.availableBalance) != null ? num(v.availableBalance)
+      : num(v.sumBalance) != null ? num(v.sumBalance)
+      : num(v.sum) != null ? num(v.sum)
+      : num(v.totalBalance) != null ? num(v.totalBalance)
+      : num(v.balance) != null ? num(v.balance) : null;
+    if (direct != null) return direct;
+    var list = v.balance;
+    if (Array.isArray(list)) {
+      for (var i = 0; i < list.length; i++) {
+        var b = list[i] || {};
+        if ((b.accountTypeId === 2 || b.accountTypeId === '2') && num(b.availBalance) != null) {
+          return num(b.availBalance);
+        }
+      }
+      for (var j = 0; j < list.length; j++) {
+        var c = list[j] || {};
+        var hit = num(c.availBalance) != null ? num(c.availBalance)
+          : num(c.availableBalance) != null ? num(c.availableBalance)
+          : num(c.balance);
+        if (hit != null) return hit;
+      }
+    } else if (list && typeof list === 'object') {
+      var o = num(list.availBalance) != null ? num(list.availBalance)
+        : num(list.availableBalance) != null ? num(list.availableBalance)
+        : num(list.balance);
+      if (o != null) return o;
+    }
+    return null;
+  }
+
+  function paintBalance(amount) {
+    if (amount == null) return;
+    var bEl = $('#hdr-balance');
+    if (bEl) bEl.textContent = Number(amount).toLocaleString('en-US', { maximumFractionDigits: 2 });
+  }
+
+  function refreshBalance() {
+    if (!window.PXAPI || !PXAPI.balance) return;
+    // Guests have no balance; a request already in flight must not stack.
+    if (!document.body.classList.contains('is-auth') || balanceBusy) return;
+    if (document.hidden) return;
+    balanceBusy = true;
+    PXAPI.balance().then(function (res) {
+      paintBalance(extractBalance(res));
+    }).catch(function () {
+      /* keep the last painted value; the next tick retries */
+    }).then(function () {
+      balanceBusy = false;
+    });
+  }
+
+  function startBalancePolling() {
+    stopBalancePolling();
+    balanceTimer = setInterval(refreshBalance, BALANCE_EVERY_MS);
+  }
+  function stopBalancePolling() {
+    if (balanceTimer) { clearInterval(balanceTimer); balanceTimer = null; }
   }
 
   /* ---------- wiring ---------- */
@@ -787,6 +862,14 @@
     loadBanners();
     startJackpot();
     hydrateSession();
+    startBalancePolling();
+    // Back from a game / vendor tab / bfcache: refresh immediately instead
+    // of waiting for the next tick — this is when the balance just moved.
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) refreshBalance();
+    });
+    window.addEventListener('focus', refreshBalance);
+    window.addEventListener('pageshow', refreshBalance);
     revealOnScroll();
     if (dlWrap) dlWrap.style.display = '';
   }
